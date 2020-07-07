@@ -1,8 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+
+from blockchain import homepage
 
 
 def my_view(request):
@@ -14,7 +16,6 @@ def my_view(request):
         # Redirect to success page
     else:
         # Return invalid login error message
-        # JJC Added
         return HttpResponse("Login Error")
 
 
@@ -32,3 +33,9 @@ def logout_request(request):
 def login_request(request):
     form = AuthenticationForm()
     return render(request=request, template_name="login.html", context={"form": form})
+
+
+def homepage_request(request):
+    return HttpResponseRedirect(homepage)
+
+
