@@ -151,66 +151,50 @@ Make sure the docker daemon is running:
 <p><code> docker stop logspout </code>
 <p><code> docker rm logspout </code>
 
+<p> Writing an application:
 
+<p> Install build essentials if you haven’t done so:
+<p><code> sudo apt install build-essential </code>
+<p><code> cd fabric-samples/fabcar </code>
+<p><code> ./startFabric.sh javascript </code>
+<p><code> cd javascript </code>
+<p><code> npm install </code>
 
+<p> Enroll admin user:
+<p><code> node enrollAdmin.js </code>
 
+<p> Register and enroll application user:
+<p><code> node registerUser.js </code>
 
+<p> Query ledger:
+<p><code> node query.js </code>
 
+<p> Change chaincode transaction request:
+<p><code> cd fabric-samples/chaincode/fabcar/javascript/lib </code>
+<p> Open query.js in text editor
+<p> Change line 44 to:
+<p><code> const result = await contract.evaluateTransaction('queryCar', 'CAR4'); </code>
+<p> Navigate back to fabcar/javascript and run query.js:
+<p><code> node query.js </code>
 
+<p> Update the ledger:
+<p> Open invoke.js in text editor
+<p> Change line 43 to the below and save:
+<p><code> await contract.submitTransaction('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom'); </code>
+<p> Run invoke.js:
+<p><code> node invoke.js </code>
+<p> To see that the transaction has taken place open query.js in text editor and change line 44 to below and save:
+<p><code> const result = await contract.evaluateTransaction('queryCar', 'CAR12'); </code>
+<p> Run query.js:
+<p><code> node query.js </code>
+<p> To change a car’s owner, open invoke.js in text editor and change line 43 to below and save:
+<p><code> await contract.submitTransaction('changeCarOwner', 'CAR12', 'Dave'); </code>
+<p> Run invoke.js:
+<p><code> node invoke.js </code>
+<p> Query result:
+<p><code> node query.js </code>
 
-
-
-
-
-
-
-
-WRITING AN APPLICATION:
-https://hyperledger-fabric.readthedocs.io/en/release-2.0/write_first_app.html
-
--install build essentials if you haven’t done so:
-sudo apt install build-essential
-
-cd fabric-samples/fabcar
-./startFabric.sh javascript
-cd javascript
-npm install
-
--enroll admin user:
-node enrollAdmin.js
-
--register and enroll application user:
-node registerUser.js
-
--query ledger:
-node query.js
-
--change chaincode transaction request:
-cd fabric-samples/chaincode/fabcar/javascript/lib
--open query.js in text editor
--change line 44 to:
-const result = await contract.evaluateTransaction('queryCar', 'CAR4');
--navigate back to fabcar/javascript and run query.js:
-node query.js
-
--update the ledger:
--open invoke.js in text editor
--change line 43 to the below and save:
-await contract.submitTransaction('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom');
--run invoke.js
-node invoke.js
--to see that the transaction has taken place open query.js in text editor and change line 44 to below and save:
-const result = await contract.evaluateTransaction('queryCar', 'CAR12');
--run query.js
-node query.js
--to change a car’s owner, open invoke.js in text editor and change line 43 to below and save:
-await contract.submitTransaction('changeCarOwner', 'CAR12', 'Dave');
--run invoke.js:
-node invoke.js
--query result:
-node query.js
-
--shutdown network:
-cd ..
-./networkDown.sh
+<p> Shutdown network:
+<p><code> cd .. </code>
+<p><code> ./networkDown.sh </code>
 
