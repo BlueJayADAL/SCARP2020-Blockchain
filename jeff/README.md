@@ -7,170 +7,149 @@ Add to .bashrc:
 export GOPATH=$HOME/go <p>
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 </code>
-<p>
-<code>
-sudo systemctl enable docker
-</code>
+<p><code>sudo systemctl enable docker</code>
   
 Add your user to the docker group:
 <p><code>
 sudo usermod -a -G docker $USER
 </code><p>
 Make sure the docker daemon is running:
-<p><code>sudo systemctl start docker</code>
+<p><code> sudo systemctl start docker </code>
 
-<h2>Install samples and binaries:</h2>
-<p><code>curl -sSL https://bit.ly/2ysbOFE | bash -s -- 2.0.1 1.4.6 0.4.18</code>
-<p><code>export PATH=<path to download location>/bin:$PATH</code>
+<h2> Install samples and binaries: </h2>
+<p><code> curl -sSL https://bit.ly/2ysbOFE | bash -s -- 2.0.1 1.4.6 0.4.18 </code>
+<p><code> export PATH=<path to download location>/bin:$PATH </code>
 
-<h3>Test network:</h3>
-<p><code>cd fabric-samples/test-network</code>
-<p>Make sure network is down:
-<p><code>./network.sh down</code>
-<p>Bring network up:
-<p><code>./network.sh up</code>
-<p>Create channel “mychannel”:
-<p><code>./network.sh createChannel</code>
-<p>Start chaincode on channel:
-<p><code>./network.sh deployCC</code>
-<p>Add peer binaries to $PATH:
-<p><code>export PATH=${PWD}/../bin:${PWD}:$PATH</code>
-<p>Add path to fabric-samples and core.yaml:
-<p><code>export FABRIC_CFG_PATH=$PWD/../config/</code>
-<p>Add environment variables to Org1:
-<p><code>export CORE_PEER_TLS_ENABLED=true</code>
-<p><code>export CORE_PEER_LOCALMSPID="Org1MSP"</code>
-<p><code>export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt</code>
-<p><code>export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp</code>
-<p><code>export CORE_PEER_ADDRESS=localhost:7051</code>
-<p>Query car ledger:
-<p><code>peer chaincode query -C mychannel -n fabcar -c '{"Args":["queryAllCars"]}'</code>
-<p>Change owner of car:
-<p><code>peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n fabcar --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"function":"changeCarOwner","Args":["CAR9","Dave"]}'</code>
-<p>Add environment variables to Org2:
-<p><code>export CORE_PEER_TLS_ENABLED=true</code>
-<p><code>export CORE_PEER_LOCALMSPID="Org2MSP"</code>
-<p><code>export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt</code>
-<p><code>export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp</code>
-<p><code>export CORE_PEER_ADDRESS=localhost:9051</code>
-<p>Query Org2 chaincode:
-<p><code>peer chaincode query -C mychannel -n fabcar -c '{"Args":["queryCar","CAR9"]}'</code>
-<p>Bring the network down:
-<code>./network.sh down</code>
+<h2> Test network and finish configuration by completing basic tutorials: </h2>
+<p><code> cd fabric-samples/test-network </code>
+<p> Make sure network is down:
+<p><code> ./network.sh down </code>
+<p> Bring network up:
+<p><code> ./network.sh up </code>
+<p> Create channel “mychannel”:
+<p><code> ./network.sh createChannel </code>
+<p> Start chaincode on channel:
+<p><code> ./network.sh deployCC </code>
+<p> Add peer binaries to $PATH:
+<p><code> export PATH=${PWD}/../bin:${PWD}:$PATH </code>
+<p> Add path to fabric-samples and core.yaml:
+<p><code> export FABRIC_CFG_PATH=$PWD/../config/ </code>
+<p> Add environment variables to Org1:
+<p><code> export CORE_PEER_TLS_ENABLED=true </code>
+<p><code> export CORE_PEER_LOCALMSPID="Org1MSP" </code>
+<p><code> export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt </code>
+<p><code> export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp </code>
+<p><code> export CORE_PEER_ADDRESS=localhost:7051 </code>
+<p> Query car ledger:
+<p><code> peer chaincode query -C mychannel -n fabcar -c '{"Args":["queryAllCars"]}' </code>
+<p> Change owner of car:
+<p><code> peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n fabcar --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"function":"changeCarOwner","Args":["CAR9","Dave"]}' </code>
+<p> Add environment variables to Org2:
+<p><code> export CORE_PEER_TLS_ENABLED=true </code>
+<p><code> export CORE_PEER_LOCALMSPID="Org2MSP" </code>
+<p><code> export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt </code>
+<p><code> export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp </code>
+<p><code> export CORE_PEER_ADDRESS=localhost:9051 </code>
+<p> Query Org2 chaincode:
+<p><code> peer chaincode query -C mychannel -n fabcar -c '{"Args":["queryCar","CAR9"]}' </code>
+<p> Bring the network down:
+<code> ./network.sh down </code>
+  
+<p> Bring up the network with Certificate Authorities:
+<p><code> cd fabric-samples/test-network </code>
+<p> Make sure network is down:
+<p><code> ./network.sh down </code>
+<p> Bring up network with CA flag:
+<p><code> ./network.sh up -ca </code>
+<p> Examine MSP structure:
+<p><code> tree organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/ </code>
+<p> Bring the network down:
+<p><code> ./network.sh down </code>
 
-Bring up the network with Certificate Authorities:
+<p> Deploying a Smart Contract to a channel:
+<p><code> cd fabric-samples/test-network </code>
+<p><code> ./network.sh down </code>
+<p><code> ./network.sh up createChannel </code>
 
-cd fabric-samples/test-network
+<p> Setup Logspout:
+<p> Copy script to current directory:
+<p><code> cp ../commercial-paper/organization/digibank/configuration/cli/monitordocker.sh . </code>
+<p> Start Logspout:
+<p><code> ./monitordocker.sh net_tes t </code>
 
-Make sure network is down:
-./network.sh down
+<p> Package Smart Contract:
+<p> Open new terminal window
+<p> Install chaincode dependencies:
+<p><code> cd fabric-samples/chaincode/fabcar/javascript </code>
+<p><code> npm install </code>
+<p><code> cd ../../../test-network </code>
+<p> Add peer binaries to $PATH </code>
+<p><code> export PATH=${PWD}/../bin:${PWD}:$PATH </code>
 
-Bring up network with CA flag:
-./network.sh up -ca
+<p> Add core.yaml to $PATH:
+<p><code> export FABRIC_CFG_PATH=$PWD/../config/ </code>
 
-Examine MSP structure:
-tree organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/
+<p> Confirm installed correctly:
+<p><code> peer version </code>
 
-Bring the network down:
-./network.sh down
+<p> Establish Org1 admin as identity:
+<p><code> export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp </code>
 
-Deploying a Smart Contract to a channel:
+<p> Create chaincode package:
+<p><code> peer lifecycle chaincode package fabcar.tar.gz --path ../chaincode/fabcar/javascript/ --lang node --label fabcar_1 </code>
 
-cd fabric-samples/test-network
+<p> Install package on peers:
 
-./network.sh down
+<p> Set environment variables to operate peer CLI as Org1 admin:
+<p><code> export CORE_PEER_TLS_ENABLED=true </code>
+<p><code> export CORE_PEER_LOCALMSPID="Org1MSP" </code>
+<p><code> export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt </code>
+<p><code> export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp </code>
+<p><code> export CORE_PEER_ADDRESS=localhost:7051 </code>
 
-./network.sh up createChannel
+<p> Install chaincode:
+<p><code> peer lifecycle chaincode install fabcar.tar.gz </code>
 
--Setup Logspout:
+<p> Same process for Org2:
+<p><code> export CORE_PEER_LOCALMSPID="Org2MSP" </code>
+<p><code> export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt </code>
+<p><code> export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt </code>
+<p><code> export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp </code>
+<p><code> export CORE_PEER_ADDRESS=localhost:9051 </code>
+<p> Approve chaincode definition:
+<p><code> peer lifecycle chaincode queryinstalled </code>
 
--copy script to current directory:
-cp ../commercial-paper/organization/digibank/configuration/cli/monitordocker.sh .
+<p> Save package id as path variable (replace your package id with the one below):
+<p><code> CC_PACKAGE_ID=fabcar_1:69de748301770f6ef64b42aa6bb6cb291df20aa39542c3ef94008615704007f3 </code>
 
+<p> Approve the chaincode:
+<p><code> peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --channelID mychannel --name fabcar --version 1.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem </code>
 
--start Logspout:
-./monitordocker.sh net_test
+<p> Set Org1 as admin and approve chaincode definition:
+<p><code> export CORE_PEER_LOCALMSPID="Org1MSP" </code>
+<p><code> export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp </code>
+<p><code> export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt </code>
+<p><code> export CORE_PEER_ADDRESS=localhost:7051 </code>
+<p><code> peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --channelID mychannel --name fabcar --version 1.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem </code>
 
--Package Smart Contract:
--open new terminal window
+<p> Check if peers have approved chaincode definition:
+<p><code> peer lifecycle chaincode checkcommitreadiness --channelID mychannel --name fabcar --version 1.0 --sequence 1 --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem --output json </code>
 
--install chaincode dependenceis:
-cd fabric-samples/chaincode/fabcar/javascript
+<p> Commit chaincode definition to channel:
+<p><code> peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --channelID mychannel --name fabcar --version 1.0 --sequence 1 --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt </code>
 
-npm install
+<p> Confirm the chaincode has been committed:
+<p><code> peer lifecycle chaincode querycommitted --channelID mychannel --name fabcar --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem </code>
 
-cd ../../../test-network
+<p> Invoke the chaincode:
+<p><code> peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n fabcar --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"function":"initLedger","Args":[]}' </code>
 
--add peer binaries to $PATH
-export PATH=${PWD}/../bin:${PWD}:$PATH
+<p> Query the ledger:
+<p><code> peer chaincode query -C mychannel -n fabcar -c '{"Args":["queryAllCars"]}' </code>
 
--add core.yaml to $PATH:
-export FABRIC_CFG_PATH=$PWD/../config/
-
--confirm installed correctly:
-peer version
-
--establish Org1 admin as identity:
-export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
-
--create chaincode package:
-peer lifecycle chaincode package fabcar.tar.gz --path ../chaincode/fabcar/javascript/ --lang node --label fabcar_1
-
--install package on peers:
-
--set environment variables to operate peer CLI as Org1 admin:
-export CORE_PEER_TLS_ENABLED=true
-export CORE_PEER_LOCALMSPID="Org1MSP"
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
-export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
-export CORE_PEER_ADDRESS=localhost:7051
-
--install chaincode:
-peer lifecycle chaincode install fabcar.tar.gz
-
--same process for Org2:
-export CORE_PEER_LOCALMSPID="Org2MSP"
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
-export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
-export CORE_PEER_ADDRESS=localhost:9051
--approve chaincode definition:
-peer lifecycle chaincode queryinstalled
-
--save package id as path variable (replace your package id with the one below):
-CC_PACKAGE_ID=fabcar_1:69de748301770f6ef64b42aa6bb6cb291df20aa39542c3ef94008615704007f3
-
--approve the chaincode:
-peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --channelID mychannel --name fabcar --version 1.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
-
--set Org1 as admin and approve chaincode definition:
-export CORE_PEER_LOCALMSPID="Org1MSP"
-export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
-export CORE_PEER_ADDRESS=localhost:7051
-peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --channelID mychannel --name fabcar --version 1.0 --package-id $CC_PACKAGE_ID --sequence 1 --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
-
--check if peers have approved chaincode definition:
-peer lifecycle chaincode checkcommitreadiness --channelID mychannel --name fabcar --version 1.0 --sequence 1 --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem --output json
-
--commit chaincode definition to channel:
-peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --channelID mychannel --name fabcar --version 1.0 --sequence 1 --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
-
--confirm the chaincode has been committed:
-peer lifecycle chaincode querycommitted --channelID mychannel --name fabcar --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
-
--invoke the chaincode:
-peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n fabcar --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"function":"initLedger","Args":[]}'
-
--query the ledger:
-peer chaincode query -C mychannel -n fabcar -c '{"Args":["queryAllCars"]}'
-
--upgrade a deployed chaincode:
-************************SKIPPED FOR NOW******************************
-
--clean up the network:
-docker stop logspout
-docker rm logspout
+<p> Clean up the network:
+<p><code> docker stop logspout </code>
+<p><code> docker rm logspout </code>
 
 
 
