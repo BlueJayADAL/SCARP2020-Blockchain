@@ -154,4 +154,70 @@ class FabCar extends Contract {
 
 }
 
-module.exports = FabCar;
+class Patient extends Contract {
+
+    async initLedger(ctx) {
+        console.info('============= START : Initialize Ledger ===========');
+        const patients = [
+            {
+                hospital: '14 days',	// https://clinicaltrials.gov/ct2/show/NCT04372602?cond=COVID-19&draw=2&rank=1
+                icu: '7 days',
+                ventilator: '8 days',
+                vasopressor: '6 days',
+            },
+    	];
+
+        for (let i = 0; i < patients.length; i++) {
+            patients[i].docType = 'patient';
+            await ctx.stub.putState('PAT' + i, Buffer.from(JSON.stringify(patients[i])));
+            console.info('Added <--> ', patients[i]);
+        }
+        console.info('============= END : Initialize Ledger ===========');
+    }
+
+    async queryPatient(ctx, patientNumber) {
+    	const patientAsBytes = await ctx.stub.getState(patientNumber); // get the patient from chaincode state
+    	if (!patientAsBytes || patientAsBytes.length === 0) {
+    		throw new Error(`${patientNumber} does not exist`);
+    	}
+    	console.log(patientAsBytes.toString());
+    	return patientAsBytes.toString();
+    }
+
+    async createPatient(ctx, patientNumber, hospital, icu, ventilator, vasopressor) {
+        console.info('============= START : Create Patient ===========');
+
+        const patient = {
+            hospital,					// https://clinicaltrials.gov/ct2/show/NCT04372602?cond=COVID-19&draw=2&rank=1
+            docType: 'patient',
+            icu,
+            ventilator,
+            vasopressor,
+        };
+
+        await ctx.stub.putState(patientNumber, Buffer.from(JSON.stringify(patient)));
+        console.info('============= END : Create Patient ===========');
+    }
+
+    async queryAllPatients(ctx) {
+        const startKey = 'PAT0';
+        const endKey = 'PAT999';
+        const allResults = [];
+        for await (const {key, value} of ctx.stub.getStateByRange(startKey, endKey)) {
+            const strValue = Buffer.from(value).toString('utf8');
+            let record;
+            try {
+                record = JSON.parse(strValue);
+            } catch (err) {
+                console.log(err);
+                record = strValue;
+            }
+            allResults.push({ Key: key, Record: record });
+        }
+        console.info(allResults);
+        return JSON.stringify(allResults);
+    }
+}
+
+//module.exports = FabCar;
+module.exports = Patient; 
