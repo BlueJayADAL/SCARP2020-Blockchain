@@ -1,5 +1,9 @@
 ## README FILE FOR GRACE
 
-EDIT ME!!
+## Inital Necessary Installations
+Python Version 3.7
+Django
+IDE used: PyCharm
 
-This is a website README
+## Creating a project
+
