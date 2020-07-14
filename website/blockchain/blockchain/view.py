@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+import xml.etree.ElementTree as ET
 
 
 def index(request):
@@ -11,11 +12,6 @@ def index(request):
 
 
 def homepage(request):
-    
-    return render(request, "homepage.html", {})
-
-
-def my_view(request):
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(request, username=username, password=password)
