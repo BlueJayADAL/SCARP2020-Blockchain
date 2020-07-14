@@ -10,13 +10,18 @@ def index(request):
     return render(request, "index.html", {})
 
 
+def homepage(request):
+    
+    return render(request, "homepage.html", {})
+
+
 def my_view(request):
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
-        # Redirect to success page
+        return render(request=request, template_name="homepage.html")
     else:
         # Return invalid login error message
         return HttpResponse("Login Error")
