@@ -32,3 +32,21 @@ def logout_request(request):
 def login_request(request):
     form = AuthenticationForm()
     return render(request=request, template_name="login.html", context={"form": form})
+
+
+def xmlread(request):
+    tree = ET.parse("C:\\Users\\grace\\Blockchain Repository\\SCARP2020-Blockchain\\website\\blockchain"
+                    "\\SearchResults.xml")
+
+    all_studies = []
+
+    for search_results_xml in tree.iter("search_results"):
+        for study_xml in search_results_xml("study"):
+            study_json = {}
+
+            for data in study_xml:
+                study_json[data.tag] = data.text.strip()
+
+            all_studies.append(study_json)
+
+    return render(request, "covidstudies.html", {'all_studies': all_studies})
