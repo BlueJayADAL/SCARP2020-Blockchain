@@ -8,8 +8,39 @@
 {% endblock extra_head %}
 
 {% block extra_js %}
-    <script>
-
-
-    </script>
+    <script></script>
 {% endblock extra_js %}
+
+<!-- Page Content -->
+{% block content %}
+<!-- Build the html table here
+      using the {{ contextValue }} sent in-->
+<table class="table table-bordered table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>Title</th>
+      <th>Status</th>
+      <th>Study Results</th>
+      <th>Condition</th>
+      <th>Intervention</th>
+      <th>Location</th>
+      <th>URL</th>
+    </tr>
+  </thead>
+  <tbody>
+  {{ all_studies }}
+    {% for study in all_studies %}
+    <tr>
+      <td>{{ study.title }}</td>
+      <td>{{ study.status }}</td>
+      <td>{{ study.study_results }}</td>
+      <td>{{ study.condition }}</td>
+      <td>{{ study.intervention }}</td>
+      <td>{{ study.location }}</td>
+      <td>{{ study.url }}</td>
+    </tr>
+{% endfor %}
+  </tbody>
+  </tfoot>
+</table>
+{% endblock content %}

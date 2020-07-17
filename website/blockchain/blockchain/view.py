@@ -17,7 +17,8 @@ def homepage(request):
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
-        return render(request=request, template_name="homepage.html")
+        all_studies = xmlread()
+        return render(request=request, template_name="homepage.html", context={'all_studies': all_studies})
     else:
         # Return invalid login error message
         return HttpResponse("Login Error")
@@ -34,7 +35,7 @@ def login_request(request):
     return render(request=request, template_name="login.html", context={"form": form})
 
 
-def xmlread(request):
+def xmlread():
     tree = ET.parse("C:\\Users\\grace\\Blockchain Repository\\SCARP2020-Blockchain\\website\\blockchain"
                     "\\SearchResults.xml")
 
@@ -48,5 +49,5 @@ def xmlread(request):
                 study_json[data.tag] = data.text.strip()
 
             all_studies.append(study_json)
-
-    return render(request, "covidstudies.html", {'all_studies': all_studies})
+    return all_studies
+    # return render(request, "homepage.html", {'all_studies': all_studies})
