@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 import xml.etree.ElementTree as ET
 
 
+
 def index(request):
     # return HttpResponse("Hello World")
     return render(request, "index.html", {})
@@ -36,13 +37,12 @@ def login_request(request):
 
 
 def xmlread():
-    tree = ET.parse("C:\\Users\\grace\\Blockchain Repository\\SCARP2020-Blockchain\\website\\blockchain"
-                    "\\SearchResults.xml")
+    tree = ET.parse("blockchain/static/dataset/SearchResults.xml")
 
     all_studies = []
 
     for search_results_xml in tree.iter("search_results"):
-        for study_xml in search_results_xml("study"):
+        for study_xml in search_results_xml.find("study"):
             study_json = {}
 
             for data in study_xml:
