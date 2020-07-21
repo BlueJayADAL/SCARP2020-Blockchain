@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 import xml.etree.ElementTree as ET
 
 
+
 def index(request):
     # return HttpResponse("Hello World")
     return render(request, "index.html", {})
@@ -47,4 +48,5 @@ def logout_request(request):
 def login_request(request):
     form = AuthenticationForm()
     return render(request=request, template_name="login.html", context={"form": form})
+
 
