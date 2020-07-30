@@ -30,7 +30,7 @@
   <tbody>
     {% for study in all_studies %}
     <tr>
-      <td>{{ study.title }}</td>
+      <td><a href="study/{{ study.id }}">{{ study.title }}</a></td>
       <td>{{ study.status }}</td>
       <td>{{ study.study_results }}</td>
       <td>{{ study.condition }}</td>

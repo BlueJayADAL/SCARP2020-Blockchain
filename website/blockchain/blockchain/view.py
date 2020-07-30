@@ -18,13 +18,14 @@ def homepage(request):
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
-        tree = ET.parse("C:\\Users\\grace\\Blockchain Repository\\SCARP2020-Blockchain\\website\\blockchain\\blockchain\\static\\dataset\\SearchResults.xml")
+        tree = ET.parse("blockchain/static/dataset/SearchResults.xml")
 
         all_studies = []
 
         for search_results_xml in tree.iter("search_results"):
             for study_xml in search_results_xml.iter("study"):
                 study_json = {}
+                study_json["id"] = study_xml.find("url").text.replace("https://ClinicalTrials.gov/show/", "")
 
                 for data in study_xml:
                     if not data.text:
@@ -50,3 +51,8 @@ def login_request(request):
     return render(request=request, template_name="login.html", context={"form": form})
 
 
+def study(request, id):
+    tree = ET.parse("blockchain/static/dataset/search_result/" + id + ".xml")
+    content = tree.find("brief_summary").find("textblock").text
+
+    return render(request=request, template_name="study.html", context={'content': content})
