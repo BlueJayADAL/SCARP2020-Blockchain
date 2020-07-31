@@ -38,8 +38,7 @@ async function main() {
         const contract = network.getContract('fabcar');
 
         // Submit the specified transaction.
-        // createCar transaction - requires 5 argument, ex: ('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
-        // changeCarOwner transaction - requires 2 args , ex: ('changeCarOwner', 'CAR12', 'Dave')
+        // createPatient transaction - requires 6 argument, ex: ('createPatient', 'PAT12', '5 days', '4 days', '3 days', '2 days')
         await contract.submitTransaction('createPatient', 'PAT1', '10 days', '5 days', '5 days', '2 days');
         console.log('Transaction has been submitted');
 
