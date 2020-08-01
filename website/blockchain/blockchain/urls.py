@@ -19,6 +19,7 @@ from django.urls import path
 from blockchain import view
 
 urlpatterns = [
+    path('data_center', view.data_center, name="data_center"),
     path('study/<str:id>', view.study, name="study"),
     path('homepage', view.homepage, name="homepage"),
     path('', view.index, name="login"),

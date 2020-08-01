@@ -25,10 +25,7 @@ def homepage(request):
             for study_xml in search_results_xml.iter("study"):
                 study_json = {}
                 study_json["id"] = study_xml.find("url").text.replace("https://ClinicalTrials.gov/show/", "")
-<<<<<<< HEAD
-=======
 
->>>>>>> c9a05205e18e27328360a2acecc2acfe5e872fb0
                 for data in study_xml:
                     if not data.text:
                         study_json[data.tag] = data.text
@@ -53,7 +50,6 @@ def login_request(request):
     return render(request=request, template_name="login.html", context={"form": form})
 
 
-<<<<<<< HEAD
 def study(request):
     id = request.GET['id']
     tree = ET.parse("blockchain/static/dataset/" + id + ".xml")
@@ -61,11 +57,13 @@ def study(request):
     return render(request=request, template_name="study.html", context={"content": content})
 
 
-
-=======
 def study(request, id):
     tree = ET.parse("blockchain/static/dataset/search_result/" + id + ".xml")
     content = tree.find("brief_summary").find("textblock").text
 
     return render(request=request, template_name="study.html", context={'content': content})
->>>>>>> c9a05205e18e27328360a2acecc2acfe5e872fb0
+
+
+def data_center(request):
+    return render(request, "data_center.html", {})
+
