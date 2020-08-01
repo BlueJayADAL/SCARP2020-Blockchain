@@ -8,7 +8,7 @@ const { Wallets } = require('fabric-network');
 const FabricCAServices = require('fabric-ca-client');
 const fs = require('fs');
 const path = require('path');
-var testUser = "user1234";      // stand-in for website user credentials
+var testUser = "user1";      // stand-in for website user credentials
 const appUser = testUser; 
 
 async function main() {
