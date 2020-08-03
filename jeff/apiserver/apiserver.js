@@ -9,7 +9,6 @@ app.use(bodyParser.json());
 const { Wallets, Gateway } = require('fabric-network');
 const path = require('path');
 const ccpPath = path.resolve(__dirname, '.',  'connection-org1.json');
-//const Wallets = require('/home/etown/scarp/SCARP2020-Blockchain/jeff/fabric-samples/fabcar/javascript/node_modules/fabric-network/lib/impl/wallet/wallets.js');
 
 
 app.get('/api/queryallpatients', async function (req, res) {
@@ -22,11 +21,6 @@ app.get('/api/queryallpatients', async function (req, res) {
         const walletPath = path.join(process.cwd(), 'wallet');
         const wallet = await Wallets.newFileSystemWallet(walletPath);
         console.log(`Wallet path: ${walletPath}`);
-
-        //const walletPath = path.join(process.cwd(), 'wallet');
-        //const wallet = await newFileSystemWallet(walletPath);
-        //console.log(`Wallet path: ${walletPath}`);
-
 
         // Check to see if we've already enrolled the user.
         const identity = await wallet.get('appUser');
@@ -63,7 +57,7 @@ app.get('/api/query/:patient_index', async function (req, res) {
     try {
         // load the network configuration
         //const ccpPath = path.resolve(__dirname, '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
-        //const ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
+        const ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 
         // Create a new file system based wallet for managing identities.
         const walletPath = path.join(process.cwd(), 'wallet');
@@ -104,7 +98,7 @@ app.post('/api/addpatient/', async function (req, res) {
     try {
         // load the network configuration
         //const ccpPath = path.resolve(__dirname, '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
-        //let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
+        let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 
         // Create a new file system based wallet for managing identities.
         const walletPath = path.join(process.cwd(), 'wallet');
