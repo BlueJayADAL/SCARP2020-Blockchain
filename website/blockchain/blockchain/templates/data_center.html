@@ -13,5 +13,22 @@
 
 <!-- Page Content -->
 {% block content %}
-
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+    <tr>
+        <th>Filename</th>
+        <th>File</th>
+        <th>Email</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for study in all_studies %}
+    <tr>
+        <td>{{ study.file_name }}</td>
+        <td><a href={{ study.display_file_path }} >{{ study.display_file }}</a></td>
+        <td>{{ study.email }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endblock content %}

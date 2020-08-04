@@ -14,23 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.template.context_processors import static
 from django.urls import path, include
 
 from blockchain import view
 
-import settings
 
 urlpatterns = [
-    path('', view.create_profile, name = 'create'),
-    path('upload/', include('profile_maker.urls')),
-    path('data_center', view.data_center, name="data_center"),
+    path('upload/', view.upload, name='create'),
+    path('data_center/', view.data_center, name="data_center"),
     path('study/<str:id>', view.study, name="study"),
     path('homepage', view.homepage, name="homepage"),
     path('', view.index, name="login"),
     path('admin/', admin.site.urls),
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,16 +1,14 @@
 from django import forms
-from .models import User_Profile
+from .models import Display_File
 
 #DataFlair #File_Upload
 
 
-class Profile_Form(forms.ModelForm):
+class Display_Form(forms.ModelForm):
     class Meta:
-        model = User_Profile
+        model = Display_File
         fields = [
-            'fname',
-            'lname',
-            'technologies',
+            'file_name',
             'email',
-            'display_picture'
+            'display_file'
         ]

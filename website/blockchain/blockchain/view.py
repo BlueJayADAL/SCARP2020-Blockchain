@@ -7,49 +7,21 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 import xml.etree.ElementTree as ET
 from django.shortcuts import render
-from .forms import Profile_Form
-from .models import User_Profile
-from easyrbac import Role, User, AccessControlList
+from .forms import Display_Form
+from .models import Display_File
+
 
 FILE_TYPES = ['txt', 'xml']
 
 
-everyone_role = Role('everyone')
-admin_role = Role('admin')
-
-everyone_user = User(roles=[everyone_role])
-admin_user = User(roles=[admin_role, everyone_role])
-
-acl = AccessControlList()
-
-acl.resource_read_rule(everyone_role, 'GET', '/api/v1/employee/1/info')
-acl.resource_delete_rule(admin_role, 'DELETE', '/api/v1/employee/1/')
-
-# checking READ operation on resource for user `everyone_user`
-for user_role in [role.get_name() for role in everyone_user.get_roles()]:
-    assert acl.is_read_allowed(user_role, 'GET', '/api/v1/employee/1/info') == True
-
-# checking WRITE operation on resource for user `everyone_user`
-# Since you have not defined the rule for the particular, it will disallow any such operation by default.
-for user_role in [role.get_name() for role in everyone_user.get_roles()]:
-    assert acl.is_write_allowed(user_role, 'WRITE', '/api/v1/employee/1/info') == False
-
-# checking WRITE operation on resource for user `admin_user`
-for user_role in [role.get_name() for role in everyone_user.get_roles()]:
-    if user_role == 'admin':  # as a user can have more than one role assigned to them
-        assert acl.is_delete_allowed(user_role, 'DELETE', '/api/v1/employee/1/') == True
-    else:
-        assert acl.is_delete_allowed(user_role, 'DELETE', '/api/v1/employee/1/') == False
-
-
-def create_profile(request):
-    form = Profile_Form()
+def upload(request):
+    form = Display_Form()
     if request.method == 'POST':
-        form = Profile_Form(request.POST, request.FILES)
+        form = Display_Form(request.POST, request.FILES)
         if form.is_valid():
             user_pr = form.save(commit=False)
-            user_pr.display_picture = request.FILES['display_picture']
-            file_type = user_pr.display_picture.url.split('.')[-1]
+            user_pr.display_file = request.FILES['display_file']
+            file_type = user_pr.display_file.url.split('.')[-1]
             file_type = file_type.lower()
             if file_type not in FILE_TYPES:
                 return render(request, 'profile_maker/error.html')
@@ -118,5 +90,22 @@ def study(request, id):
 
 
 def data_center(request):
-    return render(request, "data_center.html", {})
+    current_email = request.user.email
+    print(current_email)
+    user_studies_queryset = Display_File.objects.filter(email=current_email)
+
+    all_studies = []
+
+    for user_study in user_studies_queryset:
+
+        study_json = {}
+
+        study_json["file_name"] = user_study.file_name
+        study_json["display_file"] = user_study.display_file
+        study_json["email"] = user_study.email
+        #study_json["display_file_path"] = user_study.display_file_path
+
+        all_studies.append(study_json)
+
+    return render(request, "data_center.html", {'all_studies': all_studies})
 
