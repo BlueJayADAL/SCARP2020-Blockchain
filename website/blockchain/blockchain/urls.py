@@ -20,7 +20,7 @@ from blockchain import view
 
 
 urlpatterns = [
-    path('upload/', view.upload, name='create'),
+    path('upload/', view.upload, name='upload'),
     path('data_center/', view.data_center, name="data_center"),
     path('study/<str:id>', view.study, name="study"),
     path('homepage', view.homepage, name="homepage"),
