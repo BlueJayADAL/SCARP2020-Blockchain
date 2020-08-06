@@ -2,11 +2,14 @@ import xml
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 import xml.etree.ElementTree as ET
 from django.shortcuts import render
+
+from .decorators import unauthenticated_user, allowed_users
 from .forms import Display_Form
 from .models import Display_File
 
@@ -14,6 +17,7 @@ from .models import Display_File
 FILE_TYPES = ['txt', 'xml']
 
 
+@login_required(login_url='login')
 def upload(request):
     form = Display_Form()
     if request.method == 'POST':
@@ -36,6 +40,7 @@ def index(request):
     return render(request, "index.html", {})
 
 
+@unauthenticated_user
 def homepage(request):
     username = request.POST['username']
     password = request.POST['password']
@@ -75,6 +80,8 @@ def login_request(request):
     return render(request=request, template_name="login.html", context={"form": form})
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin', 'patient', 'researcher'])
 def study(request):
     id = request.GET['id']
     tree = ET.parse("blockchain/static/dataset/" + id + ".xml")
@@ -89,6 +96,8 @@ def study(request, id):
     return render(request=request, template_name="study.html", context={'content': content})
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin', 'patient', 'researcher'])
 def data_center(request):
     current_email = request.user.email
     print(current_email)
