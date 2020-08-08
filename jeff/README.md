@@ -231,7 +231,7 @@ async changeModel(ctx, carNumber, newModel) {
 <p> Add following class and functions:
 <p>
   <code>
-class Patient extends Contract {
+  class Patient extends Contract {
 
     async initLedger(ctx) {
         console.info('============= START : Initialize Ledger ===========');
@@ -241,9 +241,9 @@ class Patient extends Contract {
                 gender: 'male',
                 address: '1234 Main Street',
                 age: '45',
-                height: '72 in.'
-                weight: '170 lb.'
-                emr: '/home/scarp/SCARP2020-Blockchain/jeff/emr'
+                height: '72 in.',
+                weight: '170 lb.',
+                emr: '<path to local directory>',
             },
     	];
 
@@ -300,7 +300,6 @@ class Patient extends Contract {
         console.info(allResults);
         return JSON.stringify(allResults);
     }
-}
 </code>
 <p> Change:
 <p><code> module.exports = FabCar; </code>
