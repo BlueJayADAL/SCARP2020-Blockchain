@@ -124,8 +124,8 @@ app.post('/api/addpatient/', async function (req, res) {
         const contract = network.getContract('fabcar');
 
         // Submit the specified transaction.
-        // createPatient transaction - requires 6 argument, ex: ('createPatient', 'PAT12', '5 days', '4 days', '3 days', '2 days')
-        await contract.submitTransaction('createPatient', 'PAT1', '10 days', '5 days', '5 days', '2 days');
+        // createPatient transaction - requires 9 arguments, ex: ('createPatient', 'PAT1', '987654', 'female', '4321 High Street', '35', '64 in.', '120 lb.', '/home/scarp/SCARP2020-Blockchain/jeff/emr')
+        await contract.submitTransaction('createPatient', 'PAT1', '987654', 'female', '4321 High Street', '35', '64 in.', '120 lb.', '/home/scarp/SCARP2020-Blockchain/jeff/emr');
         console.log('Transaction has been submitted');
 
         // Disconnect from the gateway.
