@@ -229,17 +229,21 @@ async changeModel(ctx, carNumber, newModel) {
 <p><code> fabric-samples/chaincode/fabcar/javascript/lib </code>
 <p> Open fabcar.js in text editor
 <p> Add following class and functions:
-<p><code>
+<p>
+  <code>
 class Patient extends Contract {
 
     async initLedger(ctx) {
         console.info('============= START : Initialize Ledger ===========');
         const patients = [
             {
-                hospital: '14 days',	// https://clinicaltrials.gov/ct2/show/NCT04372602?cond=COVID-19&draw=2&rank=1
-                icu: '7 days',
-                ventilator: '8 days',
-                vasopressor: '6 days',
+                patient_id: '123456',	
+                gender: 'male',
+                address: '1234 Main Street',
+                age: '45',
+                height: '72 in.'
+                weight: '170 lb.'
+                emr: '/home/scarp/SCARP2020-Blockchain/jeff/emr'
             },
     	];
 
@@ -260,15 +264,18 @@ class Patient extends Contract {
     	return patientAsBytes.toString();
     }
 
-    async createPatient(ctx, patientNumber, hospital, icu, ventilator, vasopressor) {
+    async createPatient(ctx, patientNumber, patient_id, gender, address, age, height, weight, emr) {
         console.info('============= START : Create Patient ===========');
 
         const patient = {
-            hospital,					// https://clinicaltrials.gov/ct2/show/NCT04372602?cond=COVID-19&draw=2&rank=1
+            patient_id,					
             docType: 'patient',
-            icu,
-            ventilator,
-            vasopressor,
+            gender,
+            address,
+            age,
+            height,
+            weight,
+            emr,
         };
 
         await ctx.stub.putState(patientNumber, Buffer.from(JSON.stringify(patient)));
@@ -303,7 +310,7 @@ class Patient extends Contract {
 <p><code> fabric-samples/fabcar/javascript </code>
 <p> Open query.js in text editor
 <p> Change evaluateTransactions arguments to:
-<p><code> const result = await contract.evaluateTransaction('queryPatient', 'PAT0'); </code>
+<p><code> const result = await contract.evaluateTransaction('queryAllPatients'); </code>
 <p> Navigate to:
 <p><code> fabric-samples/test-network/scripts </code>
 <p> Open deployCC.sh in text editor and change chaincodeQuery to:
