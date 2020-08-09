@@ -24,7 +24,8 @@ urlpatterns = [
     path('upload/', view.upload, name='upload'),
     path('data_center/', view.data_center, name="data_center"),
     path('study/<str:id>', view.study, name="study"),
-    path('homepage', view.homepage, name="homepage"),
-    path('', view.index, name="login"),
+    path('homepage/', view.homepage, name="homepage"),
+    path('', view.index, name="home"),
+    path('', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 ]

@@ -17,7 +17,7 @@ from .models import Display_File
 FILE_TYPES = ['txt', 'xml']
 
 
-@login_required(login_url='login')
+@login_required
 def upload(request):
     form = Display_Form()
     if request.method == 'POST':
@@ -36,51 +36,34 @@ def upload(request):
 
 
 def index(request):
-    # return HttpResponse("Hello World")
-    return render(request, "index.html", {})
+    # return render(request, "index.html", {})
+    return render(request, "registration/login.html", {})
 
 
-@unauthenticated_user
+@login_required
+@allowed_users(allowed_roles=['admin', 'patient', 'researcher'])
 def homepage(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(request, username=username, password=password)
-    if user is not None:
-        login(request, user)
-        tree = ET.parse("blockchain/static/dataset/SearchResults.xml")
+    tree = ET.parse("blockchain/static/dataset/SearchResults.xml")
 
-        all_studies = []
+    all_studies = []
 
-        for search_results_xml in tree.iter("search_results"):
-            for study_xml in search_results_xml.iter("study"):
-                study_json = {}
-                study_json["id"] = study_xml.find("url").text.replace("https://ClinicalTrials.gov/show/", "")
+    for search_results_xml in tree.iter("search_results"):
+        for study_xml in search_results_xml.iter("study"):
+            study_json = {}
+            study_json["id"] = study_xml.find("url").text.replace("https://ClinicalTrials.gov/show/", "")
 
-                for data in study_xml:
-                    if not data.text:
-                        study_json[data.tag] = data.text
-                    else:
-                        study_json[data.tag] = data.text.strip()
+            for data in study_xml:
+                if not data.text:
+                    study_json[data.tag] = data.text
+                else:
+                    study_json[data.tag] = data.text.strip()
 
-                all_studies.append(study_json)
-        return render(request=request, template_name="homepage.html", context={'all_studies': all_studies})
-    else:
-        # Return invalid login error message
-        return HttpResponse("Login Error")
+            all_studies.append(study_json)
+    return render(request=request, template_name="homepage.html", context={'all_studies': all_studies})
 
 
-def logout_request(request):
-    logout(request)
-    messages.info(request, "Logged out successfully!")
-    return redirect("main:homepage")
 
-
-def login_request(request):
-    form = AuthenticationForm()
-    return render(request=request, template_name="login.html", context={"form": form})
-
-
-@login_required(login_url='login')
+@login_required
 @allowed_users(allowed_roles=['admin', 'patient', 'researcher'])
 def study(request):
     id = request.GET['id']
@@ -89,7 +72,18 @@ def study(request):
     return render(request=request, template_name="study.html", context={"content": content})
 
 
+<<<<<<< HEAD
 @login_required(login_url='login')
+=======
+def study(request, id):
+    tree = ET.parse("blockchain/static/dataset/search_result/" + id + ".xml")
+    content = tree.find("brief_summary").find("textblock").text
+
+    return render(request=request, template_name="study.html", context={'content': content})
+
+
+@login_required
+>>>>>>> 283d741232f3c57bfa54f6191b92f5e4ab401deb
 @allowed_users(allowed_roles=['admin', 'patient', 'researcher'])
 def data_center(request):
     current_email = request.user.email
