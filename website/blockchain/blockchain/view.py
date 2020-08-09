@@ -89,13 +89,6 @@ def study(request):
     return render(request=request, template_name="study.html", context={"content": content})
 
 
-def study(request, id):
-    tree = ET.parse("blockchain/static/dataset/search_result/" + id + ".xml")
-    content = tree.find("brief_summary").find("textblock").text
-
-    return render(request=request, template_name="study.html", context={'content': content})
-
-
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin', 'patient', 'researcher'])
 def data_center(request):
