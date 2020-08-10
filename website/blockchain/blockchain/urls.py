@@ -21,6 +21,7 @@ from blockchain import view
 
 
 urlpatterns = [
+    path('requests/', view.requests, name='requests'),
     path('upload/', view.upload, name='upload'),
     path('data_center/', view.data_center, name="data_center"),
     path('study/<str:id>', view.study, name="study"),
@@ -28,4 +29,5 @@ urlpatterns = [
     path('', view.index, name="home"),
     path('', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
+    path('uploadedstudydetails/<str:study_id>', view.uploaded_study_detail, name="uploaded_study_detail"),
 ]

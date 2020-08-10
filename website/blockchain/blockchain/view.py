@@ -1,3 +1,4 @@
+import os
 import xml
 
 from django.contrib import messages
@@ -9,6 +10,7 @@ from django.shortcuts import render, redirect
 import xml.etree.ElementTree as ET
 from django.shortcuts import render
 
+from .settings import BASE_DIR
 from .decorators import unauthenticated_user, allowed_users
 from .forms import Display_Form
 from .models import Display_File
@@ -72,9 +74,7 @@ def study(request):
     return render(request=request, template_name="study.html", context={"content": content})
 
 
-<<<<<<< HEAD
 @login_required(login_url='login')
-=======
 def study(request, id):
     tree = ET.parse("blockchain/static/dataset/search_result/" + id + ".xml")
     content = tree.find("brief_summary").find("textblock").text
@@ -83,25 +83,50 @@ def study(request, id):
 
 
 @login_required
->>>>>>> 283d741232f3c57bfa54f6191b92f5e4ab401deb
 @allowed_users(allowed_roles=['admin', 'patient', 'researcher'])
 def data_center(request):
     current_email = request.user.email
     print(current_email)
-    user_studies_queryset = Display_File.objects.filter(email=current_email)
+    user_studies_queryset = Display_File.objects.all()
 
     all_studies = []
 
     for user_study in user_studies_queryset:
 
         study_json = {}
+        study_xml_filename = '/uploadedstudydetails/' + user_study.display_file.name
 
         study_json["file_name"] = user_study.file_name
         study_json["display_file"] = user_study.display_file
         study_json["email"] = user_study.email
-        #study_json["display_file_path"] = user_study.display_file_path
+        study_json["display_file_path"] = study_xml_filename
+
+        study_json["is_link"] = (user_study.email == current_email)
 
         all_studies.append(study_json)
 
     return render(request, "data_center.html", {'all_studies': all_studies})
+
+
+def uploaded_study_detail(request, study_id):
+    # print(study_id)
+    file_path = os.path.join(BASE_DIR, 'blockchain\\media\\' + study_id)
+    study_details = open(file_path).read()
+    return render(request, "uploadedstudydetails.html", {'uploaded_study_details': study_details})
+
+
+def study_detail(request, study_id):
+    print(study_id)
+
+    if study_id.endswith('.xml'):
+        # process the xml file
+        whatever = 123
+
+    file_path = os.path.join(BASE_DIR, 'blockchain\\studies\\' + study_id)
+    study_details = open(file_path).read()
+    return render(request, "studydetails.html", {'study_details': study_details})
+
+
+def requests(request):
+    return render(request, "requests.html")
 
