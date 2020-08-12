@@ -13,8 +13,7 @@ from django.shortcuts import render
 from .settings import BASE_DIR
 from .decorators import unauthenticated_user, allowed_users
 from .forms import Display_Form
-from .models import Display_File
-
+from .models import Display_File, Request_File
 
 FILE_TYPES = ['txt', 'xml']
 
@@ -108,6 +107,7 @@ def data_center(request):
     return render(request, "data_center.html", {'all_studies': all_studies})
 
 
+@login_required
 def uploaded_study_detail(request, study_id):
     # print(study_id)
     file_path = os.path.join(BASE_DIR, 'blockchain\\media\\' + study_id)
@@ -127,6 +127,19 @@ def study_detail(request, study_id):
     return render(request, "studydetails.html", {'study_details': study_details})
 
 
+@login_required
 def requests(request):
+    user_requests_queryset = Request_File.objects.all()
+
+    all_requests = []
+
+    for user_requests in user_requests_queryset:
+        requests_json = {}
+
+        requests_json["file_name"] = user_requests.file_name
+        requests_json["status"] = user_requests.status
+        requests_json["email"] = user_requests.email
+
+        all_requests.append(requests_json)
     return render(request, "requests.html")
 

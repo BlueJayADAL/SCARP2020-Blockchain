@@ -19,7 +19,7 @@
         <th>Filename</th>
         <th>Email</th>
         <th>File</th>
-        <th></th>
+        <th>Request Status</th>
     </tr>
     </thead>
     <tbody>
@@ -32,7 +32,12 @@
             <a href={{ study.display_file_path }} >{{ study.display_file }}</a>
         {% else %}
             {{ study.display_file }}
-            <b></b>
+        {% endif %}
+        </td>
+       <td>
+        {% if study.is_link %}
+            <b>TBA: "Approved or Denied"</b>
+        {% else %}
             <button>Request Access</button>
         {% endif %}
         </td>

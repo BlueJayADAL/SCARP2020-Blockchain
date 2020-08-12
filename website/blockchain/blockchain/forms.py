@@ -1,7 +1,5 @@
 from django import forms
-from .models import Display_File
-
-#DataFlair #File_Upload
+from .models import Display_File, Request_File
 
 
 class Display_Form(forms.ModelForm):
@@ -11,4 +9,14 @@ class Display_Form(forms.ModelForm):
             'file_name',
             'email',
             'display_file'
+        ]
+
+
+class Request_Form(forms.ModelForm):
+    class Meta:
+        model = Request_File
+        fields = [
+            'file_name',
+            'email',
+            'status',
         ]

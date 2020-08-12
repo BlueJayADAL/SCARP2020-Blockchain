@@ -18,3 +18,12 @@ class Display_Name(models.Model):
     def __str__(self):
         return self.file_name
 
+
+class Request_File(models.Model):
+    file_name = models.CharField(max_length=200)
+    email = models.EmailField(max_length=200)
+    status = models.IntegerField()
+
+    def __str__(self):
+        return self.file_name
+
