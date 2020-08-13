@@ -43,7 +43,11 @@ Make sure the docker daemon is running:
 <p> Query car ledger:
 <p><code> peer chaincode query -C mychannel -n fabcar -c '{"Args":["queryAllCars"]}' </code>
 <p> Change owner of car:
-<p><code> peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n fabcar --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"function":"changeCarOwner","Args":["CAR9","Dave"]}' </code>
+<p><code> 
+    
+    peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n fabcar --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"function":"changeCarOwner","Args":["CAR9","Dave"]}' 
+    
+  </code>
 <p> Add environment variables to Org2:
 <p><code> export CORE_PEER_TLS_ENABLED=true </code>
 <p><code> export CORE_PEER_LOCALMSPID="Org2MSP" </code>
@@ -136,13 +140,21 @@ Make sure the docker daemon is running:
 <p><code> peer lifecycle chaincode checkcommitreadiness --channelID mychannel --name fabcar --version 1.0 --sequence 1 --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem --output json </code>
 
 <p> Commit chaincode definition to channel:
-<p><code> peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --channelID mychannel --name fabcar --version 1.0 --sequence 1 --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt </code>
+<p><code> 
+  
+    peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --channelID mychannel --name fabcar --version 1.0 --sequence 1 --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt 
+    
+  </code>
 
 <p> Confirm the chaincode has been committed:
 <p><code> peer lifecycle chaincode querycommitted --channelID mychannel --name fabcar --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem </code>
 
 <p> Invoke the chaincode:
-<p><code> peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n fabcar --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"function":"initLedger","Args":[]}' </code>
+<p><code> 
+  
+    peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n fabcar --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c '{"function":"initLedger","Args":[]}' 
+  
+  </code>
 
 <p> Query the ledger:
 <p><code> peer chaincode query -C mychannel -n fabcar -c '{"Args":["queryAllCars"]}' </code>
@@ -203,21 +215,26 @@ Make sure the docker daemon is running:
 <p><code> fabric-samples/chaincode/fabcar/javascript/lib </code>
 <p> Open fabcar.js in text editor
 <p> Add following code to Fabcar class:
-<p><code>
-async changeModel(ctx, carNumber, newModel) {
-    	console.info('============= START : changeMake ===========');
+<p>
+  <pre>
+    <code>
 
-    	const carAsBytes = await ctx.stub.getState(carNumber);
-    	if (!carAsBytes || carAsBytes.length === 0) {
-    	    throw new Error(`${carNumber} does not exist`);
-    	}
-    	const car = JSON.parse(carAsBytes.toString());
-    	car.model = newModel; 
+      async changeModel(ctx, carNumber, newModel) {
+          console.info('============= START : changeMake ===========');
 
-    	await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
-    	console.info('============= END : changeCarOwner ===========');
-    }
-</code>
+          const carAsBytes = await ctx.stub.getState(carNumber);
+          if (!carAsBytes || carAsBytes.length === 0) {
+              throw new Error(`${carNumber} does not exist`);
+          }
+          const car = JSON.parse(carAsBytes.toString());
+          car.model = newModel; 
+
+          await ctx.stub.putState(carNumber, Buffer.from(JSON.stringify(car)));
+          console.info('============= END : changeCarOwner ===========');
+        }
+
+   </code>
+  </pre>
 <p> Navigate to:
 <p><code> fabric-samples/fabcar/javascript </code>
 <p> Open invoke.js in text editor 
@@ -230,7 +247,9 @@ async changeModel(ctx, carNumber, newModel) {
 <p> Open fabcar.js in text editor
 <p> Add following class and functions:
 <p>
+  <pre>
    <code> 
+   
       class Patient extends Contract {
         async initLedger(ctx) {
             console.info('============= START : Initialize Ledger ===========');
@@ -299,7 +318,9 @@ async changeModel(ctx, carNumber, newModel) {
             console.info(allResults);
             return JSON.stringify(allResults);
         } 
-    </code>
+   
+   </code>
+  </pre>
 <p> Change:
 <p><code> module.exports = FabCar; </code>
 <p> To:
@@ -314,117 +335,133 @@ async changeModel(ctx, carNumber, newModel) {
 <p> Open deployCC.sh in text editor and change chaincodeQuery to:
 <p><code> peer chaincode query -C $CHANNEL_NAME -n fabcar -c '{"Args":["queryAllPatients"]}' >&log.txt </code>
 <p> Change registerUser.js to make appUser a variable rather than a hard-coded user:
-<p><code>
-  /*
-   * SPDX-License-Identifier: Apache-2.0
-   */
+<p>
+  <code>
+    
+    /*
+     * SPDX-License-Identifier: Apache-2.0
+     */
 
-  'use strict';
+    'use strict';
 
-  const { Wallets } = require('fabric-network');
-  const FabricCAServices = require('fabric-ca-client');
-  const fs = require('fs');
-  const path = require('path');
-  var testUser = "user1234";      // stand-in for website user credentials
-  const appUser = testUser; 
+    const { Wallets } = require('fabric-network');
+    const FabricCAServices = require('fabric-ca-client');
+    const fs = require('fs');
+    const path = require('path');
+    var testUser = "user1234";      // stand-in for website user credentials
+    const appUser = testUser; 
 
-  async function main() {
-      try {
-          // load the network configuration
-          const ccpPath = path.resolve(__dirname, '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
-          const ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
+    async function main() {
+        try {
+            // load the network configuration
+            const ccpPath = path.resolve(__dirname, '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
+            const ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 
-          // Create a new CA client for interacting with the CA.
-          const caURL = ccp.certificateAuthorities['ca.org1.example.com'].url;
-          const ca = new FabricCAServices(caURL);
+            // Create a new CA client for interacting with the CA.
+            const caURL = ccp.certificateAuthorities['ca.org1.example.com'].url;
+            const ca = new FabricCAServices(caURL);
 
-          // Create a new file system based wallet for managing identities.
-          const walletPath = path.join(process.cwd(), 'wallet');
-          const wallet = await Wallets.newFileSystemWallet(walletPath);
-          console.log(`Wallet path: ${walletPath}`);
+            // Create a new file system based wallet for managing identities.
+            const walletPath = path.join(process.cwd(), 'wallet');
+            const wallet = await Wallets.newFileSystemWallet(walletPath);
+            console.log(`Wallet path: ${walletPath}`);
 
-          // Check to see if we've already enrolled the user.
-          const userIdentity = await wallet.get('%s', appUser);
-          if (userIdentity) {
-              console.log('An identity for the user "%s" already exists in the wallet', appUser);
-              return;
-          }
+            // Check to see if we've already enrolled the user.
+            const userIdentity = await wallet.get('%s', appUser);
+            if (userIdentity) {
+                console.log('An identity for the user "%s" already exists in the wallet', appUser);
+                return;
+            }
 
-          // Check to see if we've already enrolled the admin user.
-          const adminIdentity = await wallet.get('admin');
-          if (!adminIdentity) {
-              console.log('An identity for the admin user "admin" does not exist in the wallet');
-              console.log('Run the enrollAdmin.js application before retrying');
-              return;
-          }
+            // Check to see if we've already enrolled the admin user.
+            const adminIdentity = await wallet.get('admin');
+            if (!adminIdentity) {
+                console.log('An identity for the admin user "admin" does not exist in the wallet');
+                console.log('Run the enrollAdmin.js application before retrying');
+                return;
+            }
 
-          // build a user object for authenticating with the CA
-          const provider = wallet.getProviderRegistry().getProvider(adminIdentity.type);
-          const adminUser = await provider.getUserContext(adminIdentity, 'admin');
+            // build a user object for authenticating with the CA
+            const provider = wallet.getProviderRegistry().getProvider(adminIdentity.type);
+            const adminUser = await provider.getUserContext(adminIdentity, 'admin');
 
-          // Register the user, enroll the user, and import the new identity into the wallet.
-          const secret = await ca.register({
-              affiliation: 'org1.department1',
-              enrollmentID: '%s', appUser,
-              role: 'client'
-          }, adminUser);
-          const enrollment = await ca.enroll({
-              enrollmentID: '%s', appUser,
-              enrollmentSecret: secret
-          });
-          const x509Identity = {
-              credentials: {
-                  certificate: enrollment.certificate,
-                  privateKey: enrollment.key.toBytes(),
-              },
-              mspId: 'Org1MSP',
-              type: 'X.509',
-          };
-          await wallet.put('appUser', x509Identity);
-          console.log('Successfully registered and enrolled admin user "%s" and imported it into the wallet', appUser);
+            // Register the user, enroll the user, and import the new identity into the wallet.
+            const secret = await ca.register({
+                affiliation: 'org1.department1',
+                enrollmentID: '%s', appUser,
+                role: 'client'
+            }, adminUser);
+            const enrollment = await ca.enroll({
+                enrollmentID: '%s', appUser,
+                enrollmentSecret: secret
+            });
+            const x509Identity = {
+                credentials: {
+                    certificate: enrollment.certificate,
+                    privateKey: enrollment.key.toBytes(),
+                },
+                mspId: 'Org1MSP',
+                type: 'X.509',
+            };
+            await wallet.put('appUser', x509Identity);
+            console.log('Successfully registered and enrolled admin user "%s" and imported it into the wallet', appUser);
 
-      } catch (error) {
-          console.error(`Failed to register user "%s": ${error}`, appUser);
-          process.exit(1);
-      }
+        } catch (error) {
+            console.error(`Failed to register user "%s": ${error}`, appUser);
+            process.exit(1);
+        }
   </code>
 
 <h2> Setting up RESTful API: </h2>
 <p>
 <p> Navigate to fabcar directory in fabric-samples and start network using javascript:
 <code> 
-cd fabric-samples/fabcar
-./startFabric.sh javascript
+  
+    cd fabric-samples/fabcar
+    ./startFabric.sh javascript
+
   </code>
 <p> Create apiserver.js
 <p> Create a directory for the API and navigate to it:
   <p><code>
-    mkdir apiserver
-    cd apiserver
-    </code>
+    
+        mkdir apiserver
+        cd apiserver
+        
+   </code>
 <p> Copy apiserver.js and the following files to apiserver directory:
   <p><code>
+    
     fabric-samples/fabcar/javascript/package.json
     fabric-samples/fabcar/javascript/wallet/appUser.id
     go/pkg/mod/github.com /hyperledger/fabric-sdk-go@v1.0.0-beta2/pkg/gateway/testdata/connection.json
-    </code>
+    
+   </code>
 <p> Create a directory for wallet inside of apiserver directory:
   <p><code>
+    
     cd apiserver
     mkdir wallet
     mv appUser wallet/appUser
-    </code>
+    
+   </code>
 <p> Install required node modules (need to use Node version >10):
   <p><code>
+    
     npm install
     npm install express body-parser --save
-    </code>
+    
+   </code>
 <p> Start the server:
   <p><code>
+    
     node apiserver.js
-    </code>
+    
+   </code>
 <p> Open a new terminal and check to see if the server is running on port 8080:
   <p><code>
+    
     sudo lsof -i -P -n | grep LISTEN
-    </code>
+    
+   </code>
     
