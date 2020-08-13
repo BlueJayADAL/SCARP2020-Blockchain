@@ -230,77 +230,76 @@ async changeModel(ctx, carNumber, newModel) {
 <p> Open fabcar.js in text editor
 <p> Add following class and functions:
 <p>
-  <code>
-  class Patient extends Contract {
-
-    async initLedger(ctx) {
-        console.info('============= START : Initialize Ledger ===========');
-        const patients = [
-            {
-                patient_id: '123456',	
-                gender: 'male',
-                address: '1234 Main Street',
-                age: '45',
-                height: '72 in.',
-                weight: '170 lb.',
-                emr: '<path to local directory>',
-            },
-    	];
-
-        for (let i = 0; i < patients.length; i++) {
-            patients[i].docType = 'patient';
-            await ctx.stub.putState('PAT' + i, Buffer.from(JSON.stringify(patients[i])));
-            console.info('Added <--> ', patients[i]);
-        }
-        console.info('============= END : Initialize Ledger ===========');
-    }
-
-    async queryPatient(ctx, patientNumber) {
-    	const patientAsBytes = await ctx.stub.getState(patientNumber); // get the patient from chaincode state
-    	if (!patientAsBytes || patientAsBytes.length === 0) {
-    		throw new Error(`${patientNumber} does not exist`);
-    	}
-    	console.log(patientAsBytes.toString());
-    	return patientAsBytes.toString();
-    }
-
-    async createPatient(ctx, patientNumber, patient_id, gender, address, age, height, weight, emr) {
-        console.info('============= START : Create Patient ===========');
-
-        const patient = {
-            patient_id,					
-            docType: 'patient',
-            gender,
-            address,
-            age,
-            height,
-            weight,
-            emr,
-        };
-
-        await ctx.stub.putState(patientNumber, Buffer.from(JSON.stringify(patient)));
-        console.info('============= END : Create Patient ===========');
-    }
-
-    async queryAllPatients(ctx) {
-        const startKey = 'PAT0';
-        const endKey = 'PAT999';
-        const allResults = [];
-        for await (const {key, value} of ctx.stub.getStateByRange(startKey, endKey)) {
-            const strValue = Buffer.from(value).toString('utf8');
-            let record;
-            try {
-                record = JSON.parse(strValue);
-            } catch (err) {
-                console.log(err);
-                record = strValue;
+   <code> 
+      class Patient extends Contract {
+        async initLedger(ctx) {
+            console.info('============= START : Initialize Ledger ===========');
+            const patients = [
+                {
+                    patient_id: '123456',	
+                    gender: 'male',
+                    address: '1234 Main Street',
+                    age: '45',
+                    height: '72 in.',
+                    weight: '170 lb.',
+                    emr: '<path to local directory>',
+                },
+          ];
+     
+            for (let i = 0; i < patients.length; i++) {
+                patients[i].docType = 'patient';
+                await ctx.stub.putState('PAT' + i, Buffer.from(JSON.stringify(patients[i])));
+                console.info('Added <--> ', patients[i]);
             }
-            allResults.push({ Key: key, Record: record });
+            console.info('============= END : Initialize Ledger ===========');
         }
-        console.info(allResults);
-        return JSON.stringify(allResults);
-    }
-</code>
+
+        async queryPatient(ctx, patientNumber) {
+          const patientAsBytes = await ctx.stub.getState(patientNumber); // get the patient from chaincode state
+          if (!patientAsBytes || patientAsBytes.length === 0) {
+            throw new Error(`${patientNumber} does not exist`);
+          }
+          console.log(patientAsBytes.toString());
+          return patientAsBytes.toString();
+        }
+
+        async createPatient(ctx, patientNumber, patient_id, gender, address, age, height, weight, emr) {
+            console.info('============= START : Create Patient ===========');
+
+            const patient = {
+                patient_id,					
+                docType: 'patient',
+                gender,
+                address,
+                age,
+                height,
+                weight,
+                emr,
+            };
+
+            await ctx.stub.putState(patientNumber, Buffer.from(JSON.stringify(patient)));
+            console.info('============= END : Create Patient ===========');
+        }
+
+        async queryAllPatients(ctx) {
+            const startKey = 'PAT0';
+            const endKey = 'PAT999';
+            const allResults = [];
+            for await (const {key, value} of ctx.stub.getStateByRange(startKey, endKey)) {
+                const strValue = Buffer.from(value).toString('utf8');
+                let record;
+                try {
+                    record = JSON.parse(strValue);
+                } catch (err) {
+                    console.log(err);
+                    record = strValue;
+                }
+                allResults.push({ Key: key, Record: record });
+            }
+            console.info(allResults);
+            return JSON.stringify(allResults);
+        } 
+    </code>
 <p> Change:
 <p><code> module.exports = FabCar; </code>
 <p> To:
@@ -316,80 +315,79 @@ async changeModel(ctx, carNumber, newModel) {
 <p><code> peer chaincode query -C $CHANNEL_NAME -n fabcar -c '{"Args":["queryAllPatients"]}' >&log.txt </code>
 <p> Change registerUser.js to make appUser a variable rather than a hard-coded user:
 <p><code>
-/*
- * SPDX-License-Identifier: Apache-2.0
- */
+  /*
+   * SPDX-License-Identifier: Apache-2.0
+   */
 
-'use strict';
+  'use strict';
 
-const { Wallets } = require('fabric-network');
-const FabricCAServices = require('fabric-ca-client');
-const fs = require('fs');
-const path = require('path');
-var testUser = "user1234";      // stand-in for website user credentials
-const appUser = testUser; 
+  const { Wallets } = require('fabric-network');
+  const FabricCAServices = require('fabric-ca-client');
+  const fs = require('fs');
+  const path = require('path');
+  var testUser = "user1234";      // stand-in for website user credentials
+  const appUser = testUser; 
 
-async function main() {
-    try {
-        // load the network configuration
-        const ccpPath = path.resolve(__dirname, '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
-        const ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
+  async function main() {
+      try {
+          // load the network configuration
+          const ccpPath = path.resolve(__dirname, '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
+          const ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 
-        // Create a new CA client for interacting with the CA.
-        const caURL = ccp.certificateAuthorities['ca.org1.example.com'].url;
-        const ca = new FabricCAServices(caURL);
+          // Create a new CA client for interacting with the CA.
+          const caURL = ccp.certificateAuthorities['ca.org1.example.com'].url;
+          const ca = new FabricCAServices(caURL);
 
-        // Create a new file system based wallet for managing identities.
-        const walletPath = path.join(process.cwd(), 'wallet');
-        const wallet = await Wallets.newFileSystemWallet(walletPath);
-        console.log(`Wallet path: ${walletPath}`);
+          // Create a new file system based wallet for managing identities.
+          const walletPath = path.join(process.cwd(), 'wallet');
+          const wallet = await Wallets.newFileSystemWallet(walletPath);
+          console.log(`Wallet path: ${walletPath}`);
 
-        // Check to see if we've already enrolled the user.
-        const userIdentity = await wallet.get('%s', appUser);
-        if (userIdentity) {
-            console.log('An identity for the user "%s" already exists in the wallet', appUser);
-            return;
-        }
+          // Check to see if we've already enrolled the user.
+          const userIdentity = await wallet.get('%s', appUser);
+          if (userIdentity) {
+              console.log('An identity for the user "%s" already exists in the wallet', appUser);
+              return;
+          }
 
-        // Check to see if we've already enrolled the admin user.
-        const adminIdentity = await wallet.get('admin');
-        if (!adminIdentity) {
-            console.log('An identity for the admin user "admin" does not exist in the wallet');
-            console.log('Run the enrollAdmin.js application before retrying');
-            return;
-        }
+          // Check to see if we've already enrolled the admin user.
+          const adminIdentity = await wallet.get('admin');
+          if (!adminIdentity) {
+              console.log('An identity for the admin user "admin" does not exist in the wallet');
+              console.log('Run the enrollAdmin.js application before retrying');
+              return;
+          }
 
-        // build a user object for authenticating with the CA
-        const provider = wallet.getProviderRegistry().getProvider(adminIdentity.type);
-        const adminUser = await provider.getUserContext(adminIdentity, 'admin');
+          // build a user object for authenticating with the CA
+          const provider = wallet.getProviderRegistry().getProvider(adminIdentity.type);
+          const adminUser = await provider.getUserContext(adminIdentity, 'admin');
 
-        // Register the user, enroll the user, and import the new identity into the wallet.
-        const secret = await ca.register({
-            affiliation: 'org1.department1',
-            enrollmentID: '%s', appUser,
-            role: 'client'
-        }, adminUser);
-        const enrollment = await ca.enroll({
-            enrollmentID: '%s', appUser,
-            enrollmentSecret: secret
-        });
-        const x509Identity = {
-            credentials: {
-                certificate: enrollment.certificate,
-                privateKey: enrollment.key.toBytes(),
-            },
-            mspId: 'Org1MSP',
-            type: 'X.509',
-        };
-        await wallet.put('appUser', x509Identity);
-        console.log('Successfully registered and enrolled admin user "%s" and imported it into the wallet', appUser);
+          // Register the user, enroll the user, and import the new identity into the wallet.
+          const secret = await ca.register({
+              affiliation: 'org1.department1',
+              enrollmentID: '%s', appUser,
+              role: 'client'
+          }, adminUser);
+          const enrollment = await ca.enroll({
+              enrollmentID: '%s', appUser,
+              enrollmentSecret: secret
+          });
+          const x509Identity = {
+              credentials: {
+                  certificate: enrollment.certificate,
+                  privateKey: enrollment.key.toBytes(),
+              },
+              mspId: 'Org1MSP',
+              type: 'X.509',
+          };
+          await wallet.put('appUser', x509Identity);
+          console.log('Successfully registered and enrolled admin user "%s" and imported it into the wallet', appUser);
 
-    } catch (error) {
-        console.error(`Failed to register user "%s": ${error}`, appUser);
-        process.exit(1);
-    }
-}
-</code>
+      } catch (error) {
+          console.error(`Failed to register user "%s": ${error}`, appUser);
+          process.exit(1);
+      }
+  </code>
 
 <h2> Setting up RESTful API: </h2>
 <p>
