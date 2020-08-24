@@ -40,7 +40,7 @@ Move css, js, and vendor folders into django projects static folder
 
 ### Implementing login feature
 Create a file called login.css in static/jquery/ and add the following code
-<p><code>body {
+<p>body {
   display: -ms-flexbox;
   display: -webkit-box;
   display: flex;
@@ -84,7 +84,7 @@ Create a file called login.css in static/jquery/ and add the following code
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-</style></code>
+</style></p>
 
 <p>Create a folder called registration in templates folder
   
@@ -341,7 +341,6 @@ def allowed_users(allowed_roles=[]):
         <th>Filename</th>
         <th>Email</th>
         <th>File</th>
-        <th>Request Status</th>
     </tr>
     </thead>
     <tbody>
@@ -354,13 +353,6 @@ def allowed_users(allowed_roles=[]):
             <a href={{ study.display_file_path }} >{{ study.display_file }}</a>
         {% else %}
             {{ study.display_file }}
-        {% endif %}
-        </td>
-       <td>
-        {% if study.is_link %}
-            <b>TBA: "Approved or Denied"</b>
-        {% else %}
-            <button>Request Access</button>
         {% endif %}
         </td>
     </tr>
